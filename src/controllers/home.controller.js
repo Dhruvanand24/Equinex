@@ -4,8 +4,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 const home = asyncHandler(async(req,res)=>{
     return res.status(201).json(
-        new ApiResponse(200, createdUser, "welcome")
+        new ApiResponse(200, "welcome")
     )
 
-});
-export {home}
+})
+export {home,}
