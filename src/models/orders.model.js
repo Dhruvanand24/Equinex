@@ -23,17 +23,11 @@ const orderschema = new Schema({
         required:true
     },
     production_process: {
-        process:[
-            {
-                Mr_request_initial:{
-                    type:String,
-                    required:true
-                },
-                Mr_goods_received:{
-                    type:Boolean,
-                    required:true
-                },
-                Receipt:{
+        process:{
+            type:Object,// Mr request, Mr receive, Plasma Cutting, Grianding, Bushing....
+            required:true
+        },
+        Receipt:{
                     content: {
                         type: Buffer,
                         required: false // Change to true if a receipt is always required
@@ -43,9 +37,6 @@ const orderschema = new Schema({
                         required: false // Change to true if a receipt is always required
                     }
                 }
-                
-            }
-        ]
     },
     Date_of_Delivery: {
         type: Date,
@@ -65,4 +56,4 @@ const orderschema = new Schema({
 
 
 
-export const Company = mongoose.model("Orders", orderschema)
+export const Orders = mongoose.model("Orders", orderschema)

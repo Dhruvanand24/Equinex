@@ -1,7 +1,7 @@
 import mongoose, {Schema} from "mongoose";
 
 
-const mr_requrest_schema = new Schema({
+const mr_request_schema = new Schema({
     Order_Id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Orders',
@@ -30,7 +30,7 @@ const mr_requrest_schema = new Schema({
         type:Object,// isissue, issu by, issue date
         required:true
     },
-    Department_recivence: {
+    Receive_in_Department: {
         type: Object,// received by, receiveing date
     },
     Receipt:{
@@ -48,4 +48,4 @@ const mr_requrest_schema = new Schema({
 
 
 
-export const Company = mongoose.model("MaterialRequest", mr_requrest_schema)
+export const MaterialRequest = mongoose.model("MaterialRequest", mr_request_schema)
