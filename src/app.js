@@ -22,6 +22,6 @@ app.use(cookieParser())
 
 //routes declaration
 app.use("/api/v1/users", userRouter)
-app.use("/home", homeRouter)
+app.use("/", homeRouter)
 
 export {app};
