@@ -8,16 +8,12 @@ import itemRouter from "./routes/item.routes.js";
 import materialRouter from "./routes/material.routes.js";
 
 const app = express();
-const app = express();
+
+
 
 app.use(
   cors({
-app.use(
-  cors({
     origin: process.env.CORS_ORIGIN,
-    credentials: true,
-  })
-);
     credentials: true,
   })
 );
