@@ -10,15 +10,19 @@ const mr_request_schema = new Schema({
     type: Date,
     required: true,
   },
-  List_of_items: {
-    items: [
-      {
-        iteme: {
-          type: Object, //items name, quantity
-        },
+  List_of_materials: [
+    {
+      material_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Material",
+        required: true,
       },
-    ],
-  },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
   Status_approval: {
     type: Object, // approved by, isapproved, approval data
     required: true,
