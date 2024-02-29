@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const orderschema = new Schema({
   Order_By: {
@@ -52,4 +53,5 @@ const orderschema = new Schema({
   },
 });
 
+export const Order = mongoose.model("Order", orderschema);
 export const Order = mongoose.model("Order", orderschema);
