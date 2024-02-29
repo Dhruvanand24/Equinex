@@ -1,16 +1,13 @@
-import mongoose, {Schema} from "mongoose";
-
+import mongoose, { Schema } from "mongoose";
 
 const materialSchema = new Schema({
-    Name: {
-        type: String, 
-        required: true
-    },
-    description: {
-        type: Object, 
-    }
-})
+  Name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: Object,
+  },
+});
 
-
-
-export const Material = mongoose.model("Material", materialSchema)
+export const Material = mongoose.model("Material", materialSchema);
