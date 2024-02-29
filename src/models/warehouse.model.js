@@ -6,7 +6,7 @@ const warehouseSchema = new Schema({
         type: String, 
         required: true
     },
-    locaiton: {
+    location: {
         type: Date,
         required: true
     },
