@@ -56,4 +56,4 @@ const orderschema = new Schema({
 
 
 
-export const Orders = mongoose.model("Orders", orderschema)
+export const Order = mongoose.model("Order", orderschema)
