@@ -1,13 +1,10 @@
-import mongoose, {Schema} from "mongoose";
-
+import mongoose, { Schema } from "mongoose";
 
 const processschema = new Schema({
-    name:{
-        type: String, 
-        required: true
-    }
-})
+  name: {
+    type: String,
+    required: true,
+  },
+});
 
-
-
-export const Process = mongoose.model("Process", processschema)
+export const Process = mongoose.model("Process", processschema);
