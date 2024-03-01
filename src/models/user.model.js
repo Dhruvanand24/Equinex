@@ -31,6 +31,14 @@ const userSchema = new Schema({
   refreshToken: {
     type: String,
   },
+  post: {
+    type: String,
+    required: [true, "Post is Required"]
+  },
+  AccessPermission: {
+    type: Object,
+  }
+
 });
 
 userSchema.pre("save", async function (next) {

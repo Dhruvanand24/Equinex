@@ -17,6 +17,8 @@ const inventoryschema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Material",
     required: true,
+    index: true, // Add an index to improve query performance
+    unique: true, // Ensure uniqueness for materialID
   },
   quantity: {
     type: Number,

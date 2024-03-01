@@ -67,22 +67,31 @@ const createMaterialRequest = asyncHandler(async (req, res) => {
 });
 
 const getAllMaterial = asyncHandler(async (req, res) => {
-  const allMat = await Material.find();
-  if (!allMat) {
+  const allMaterials = await Material.find();
+  if (!allMaterials) {
     throw new ApiError(500, "Something Went wrong while getting materials");
   }
   return res
     .status(201)
-    .json(new ApiResponse(200, allMat, "material get successfully"));
+    .json(new ApiResponse(200, allMaterials, "material get successfully"));
 });
 const getAllMaterialRequest = asyncHandler(async (req, res) => {
-  const allMatReq = await MaterialRequest.find();
-  if (!allMatReq) {
-    throw new ApiError(500, "Something Went wrong while getting material request");
+  const allMaterialRequest = await MaterialRequest.find();
+  if (!allMaterialRequest) {
+    throw new ApiError(
+      500,
+      "Something Went wrong while getting material request"
+    );
   }
   return res
     .status(201)
-    .json(new ApiResponse(200, allMatReq, "material request get successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        allMaterialRequest,
+        "material request get successfully"
+      )
+    );
 });
 export {
   createMaterial,
