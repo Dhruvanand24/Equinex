@@ -5,10 +5,9 @@ const warehouseSchema = new Schema({
     type: String,
     required: true,
   },
-  location: {
-    type: Date,
-    required: true,
-  },
+  manager: {
+    type: mongoose.Schema.Types.ObjectId
+  }
 });
 
 export const Warehouse = mongoose.model("Warehouse", warehouseSchema);

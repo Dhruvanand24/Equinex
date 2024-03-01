@@ -37,6 +37,10 @@ const userSchema = new Schema({
   },
   AccessPermission: {
     type: Object,
+  },
+  warehouseId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Warehouse"
   }
 
 });
