@@ -75,6 +75,7 @@ const getAllMaterial = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(200, allMaterials, "material get successfully"));
 });
+
 const getAllMaterialRequest = asyncHandler(async (req, res) => {
   const allMaterialRequest = await MaterialRequest.find();
   if (!allMaterialRequest) {
@@ -93,9 +94,52 @@ const getAllMaterialRequest = asyncHandler(async (req, res) => {
       )
     );
 });
+
+const updateMaterialRequest = asyncHandler(async(req,res)=>{
+  const {_id,data}=req.body;
+  //example of req.body
+  // {
+  //   "_id":"65e0dc098dd0e98626e5959a",
+  //   "data":{
+  //     "Store": {
+  //       "isissue": true,
+  //       "issue_by": "testme",
+  //       "issue_date": "ajj ka din"
+  //     }
+  //   }
+    
+  // }
+  const materialrequest=await MaterialRequest.findOne({_id});
+  if (!materialrequest) {
+    throw new ApiError(
+      500,
+      "Something Went wrong while getting material request for updation"
+    );
+  }
+
+  const updatedMaterialRequest = await MaterialRequest.findByIdAndUpdate(_id, data, { new: true });
+
+  if(!updatedMaterialRequest){
+    throw new ApiError(
+      500,
+      "Something Went wrong while updating material request"
+    );
+  }
+  return res
+    .status(201)
+    .json(
+      new ApiResponse(
+        200,
+        updatedMaterialRequest,
+        "material request updated successfully"
+      )
+    );
+
+})
 export {
   createMaterial,
   createMaterialRequest,
   getAllMaterial,
   getAllMaterialRequest,
+  updateMaterialRequest
 };
