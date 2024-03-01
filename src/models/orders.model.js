@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const orderschema = new Schema({
   Order_By: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
   Date_of_Order: {
@@ -50,6 +50,9 @@ const orderschema = new Schema({
       required: false, // Change to true if a receipt is always required
     },
   },
+},
+{
+  timestamps: true
 });
 
 export const Order = mongoose.model("Order", orderschema);

@@ -49,6 +49,9 @@ const purchase_request_schema = new Schema({
   GRN_close: {
     type: Object, //final report, aggrigate data of GRN, QC, UOC
   },
+},
+{
+  timestamps: true
 });
 
 export const PurchaseRequest = mongoose.model(
