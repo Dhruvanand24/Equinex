@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const purchase_request_schema = new Schema(
+const purchase_order_schema = new Schema(
   {
     Requester: {
       type: mongoose.Schema.Types.ObjectId,
@@ -24,17 +24,10 @@ const purchase_request_schema = new Schema(
         },
       },
     ],
-    isApproved: {
-      type: Boolean,
+    Seller: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
-    },
-    Approved_by: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // the user id who have authority to approve
-    },
-    Closed_by: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // the user who convert purchase request to purchase order
+      ref: "Seller",
     },
   },
   {
@@ -42,7 +35,7 @@ const purchase_request_schema = new Schema(
   }
 );
 
-export const PurchaseRequest = mongoose.model(
-  "PurchaseRequest",
-  purchase_request_schema
+export const PurchaseOrder = mongoose.model(
+  "PurchaseOrder",
+  purchase_order_schema
 );
