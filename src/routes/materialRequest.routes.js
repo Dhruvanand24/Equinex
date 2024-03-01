@@ -1,9 +1,10 @@
-import {Router} from "express";
-import { materialRequest } from "../controllers/materialRequest.controller.js";
+import { Router } from "express";
+import { materialRequest, challan } from "../controllers/materialRequest.controller.js";
 
-const router = Router()
+const router = Router();
 
-router.route("/update/:id").post(materialRequest)
+router.route("/update/:id").put(materialRequest);
 
-export default router
+router.route("/:id/challan").get(challan);
 
+export default router;
