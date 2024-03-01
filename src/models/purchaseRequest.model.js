@@ -1,5 +1,15 @@
 import mongoose, { Schema } from "mongoose";
-
+const materials = new Schema({
+  material_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Material",
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+});
 const purchase_request_schema = new Schema(
   {
     Requester: {
@@ -11,19 +21,7 @@ const purchase_request_schema = new Schema(
       type: Date,
       required: true,
     },
-    List_of_materials: [
-      {
-        material_id: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Material",
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-        },
-      },
-    ],
+    List_of_materials: [materials],
     isApproved: {
       type: Boolean,
       required: true,
