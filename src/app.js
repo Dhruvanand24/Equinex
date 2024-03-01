@@ -6,6 +6,7 @@ import homeRouter from "./routes/home.routes.js";
 import itemRouter from "./routes/item.routes.js";
 import materialRouter from "./routes/material.routes.js";
 import purchaseRouter from "./routes/purchase.routes.js";
+import inventoryRouter from "./routes/inventory.routes.js";
 
 const app = express();
 
