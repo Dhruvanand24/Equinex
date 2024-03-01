@@ -97,6 +97,18 @@ const getAllMaterialRequest = asyncHandler(async (req, res) => {
 
 const updateMaterialRequest = asyncHandler(async(req,res)=>{
   const {_id,data}=req.body;
+  //example of req.body
+  // {
+  //   "_id":"65e0dc098dd0e98626e5959a",
+  //   "data":{
+  //     "Store": {
+  //       "isissue": true,
+  //       "issue_by": "testme",
+  //       "issue_date": "ajj ka din"
+  //     }
+  //   }
+    
+  // }
   const materialrequest=await MaterialRequest.findOne({_id});
   if (!materialrequest) {
     throw new ApiError(
