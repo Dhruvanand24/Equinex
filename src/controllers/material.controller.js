@@ -78,10 +78,15 @@ const getAllMaterial = asyncHandler(async (req, res) => {
 const getAllMaterialRequest = asyncHandler(async (req, res) => {
   const allMatReq = await MaterialRequest.find();
   if (!allMatReq) {
-    throw new ApiError(500, "Something Went wrong while getting materials");
+    throw new ApiError(500, "Something Went wrong while getting material request");
   }
   return res
     .status(201)
-    .json(new ApiResponse(200, allMatReq, "material get successfully"));
+    .json(new ApiResponse(200, allMatReq, "material request get successfully"));
 });
-export { createMaterial, createMaterialRequest, getAllMaterial, getAllMaterialRequest };
+export {
+  createMaterial,
+  createMaterialRequest,
+  getAllMaterial,
+  getAllMaterialRequest,
+};
