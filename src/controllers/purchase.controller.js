@@ -66,4 +66,28 @@ const CreatePurchaseOrder = asyncHandler(async (req, res) => {
     );
 });
 
-export { CreatePurchaseRequest, CreatePurchaseOrder };
+const GetAllMaterialListOfPurchaseOrder = asyncHandler(async (req, res) => {
+  const { _id } = req.body;
+
+  const purchaseOrder = await PurchaseOrder.findOne({ _id });
+
+  if (!purchaseOrder) {
+    throw new ApiError(500, "Purchase Order not found!");
+  }
+
+  return res
+    .status(201)
+    .json(
+      new ApiResponse(
+        200,
+        purchaseOrder.List_of_materials,
+        "List of materials get succsfully"
+      )
+    );
+});
+
+export {
+  CreatePurchaseRequest,
+  CreatePurchaseOrder,
+  GetAllMaterialListOfPurchaseOrder,
+};
