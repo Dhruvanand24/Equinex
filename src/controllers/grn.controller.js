@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { GRN } from "../models/grn.model.js";
+import { PurchaseOrder } from "../models/purchaseOrder.model.js";
 
 const CreateGRN = asyncHandler(async (req, res) => {
   const { userid, purchaseOrderId, receivedMaterials, date } = req.body;
@@ -24,53 +25,68 @@ const CreateGRN = asyncHandler(async (req, res) => {
 });
 
 const UpdateReceivedData = asyncHandler(async (req, res) => {
-  const { _id, receivedMaterials } = req.body;
-  const grn = GRN.findOne({ _id });
+  const {
+    _id,
+    receivedQuantity,
+    cost_of_material,
+    unit_of_material,
+    materialId,
+  } = req.body;
+  const grn = await GRN.findOne({ _id });
+
   if (!grn) {
     throw new ApiError(500, "Not found GRN");
   }
+
+  const purchaseorderid = grn.purchaseOrderId;
+
+  const purchaseorder = await PurchaseOrder.findOne({ _id: purchaseorderid });
+
+  if (!purchaseorder) {
+    throw new ApiError(500, "Not found purchase order as on grn");
+  }
+
+  const isMaterialIdPresentInPurchaseOrder =
+     purchaseorder.List_of_materials.find(
+      (material) => material.material_id.toString() === materialId
+    );
+  if (!isMaterialIdPresentInPurchaseOrder) {
+    throw new ApiError(500, "Not found material id in purchase order");
+  }
+
+  const isMaterialPresent = grn.receivedMaterials.find(
+    (material) => material.materialId.toString() === materialId
+  );
+
+  if (!isMaterialPresent) {
+    grn.receivedMaterials.push({
+      receivedQuantity,
+      cost_of_material,
+      unit_of_material,
+      materialId,
+    });
+  } else {
+    const index = grn.receivedMaterials.findIndex(
+      (material) => material.materialId.toString() === materialId
+    );
+
+    grn.receivedMaterials[index] = {
+      receivedQuantity,
+      cost_of_material,
+      unit_of_material,
+      materialId,
+    };
+  }
+
+  const updatedgrn = await grn.save();
+
+  if (!updatedgrn) {
+    throw new ApiError(500, "Something went wrong in updation of GRN");
+  }
+
+  return res
+    .status(201)
+    .json(new ApiResponse(200, updatedgrn, "GRN updated successfully"));
 });
+
 export { CreateGRN, UpdateReceivedData };
-
-// gpt
-// import express from 'express';
-// import { GRN } from './your-grn-model'; // Import your GRN model
-
-// const router = express.Router();
-
-// // Route to update received quantity for a material in a GRN by GRN ID and material ID
-// router.post('/grn/:grnId/update-material/:materialId', async (req, res) => {
-//   try {
-//     const { grnId, materialId } = req.params;
-//     const { receivedQuantity } = req.body;
-
-//     // Find the GRN by ID
-//     const grn = await GRN.findById(grnId);
-
-//     if (!grn) {
-//       return res.status(404).json({ message: 'GRN not found' });
-//     }
-
-//     // Find the material by ID in receivedMaterials array
-//     const materialToUpdate = grn.receivedMaterials.find(
-//       (material) => material.materialId.toString() === materialId
-//     );
-
-//     if (!materialToUpdate) {
-//       return res.status(404).json({ message: 'Material not found in GRN' });
-//     }
-
-//     // Update the receivedQuantity of the material
-//     materialToUpdate.receivedQuantity = receivedQuantity;
-
-//     // Save the updated GRN
-//     await grn.save();
-
-//     return res.status(200).json({ message: 'Received quantity updated successfully', grn });
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// });
-
-// export default router;
