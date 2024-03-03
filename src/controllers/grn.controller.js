@@ -47,7 +47,7 @@ const UpdateReceivedData = asyncHandler(async (req, res) => {
   }
 
   const isMaterialIdPresentInPurchaseOrder =
-     purchaseorder.List_of_materials.find(
+    purchaseorder.List_of_materials.find(
       (material) => material.material_id.toString() === materialId
     );
   if (!isMaterialIdPresentInPurchaseOrder) {
@@ -89,4 +89,74 @@ const UpdateReceivedData = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedgrn, "GRN updated successfully"));
 });
 
-export { CreateGRN, UpdateReceivedData };
+const UpdateQCData = asyncHandler(async (req, res) => {
+  const { _id, done_by, rejectedQuantity, acceptedQuantity, materialId, date } =
+    req.body;
+  const grn = await GRN.findOne({ _id });
+
+  if (!grn) {
+    throw new ApiError(500, "Not found GRN");
+  }
+
+  const receivedMaterials = grn.receivedMaterials;
+
+  const receivedmaterial = receivedMaterials.find(
+    (material) => material.materialId.toString() === materialId
+  );
+
+  if (receivedmaterial.receivedQuantity < rejectedQuantity + acceptedQuantity) {
+    throw new ApiError(
+      500,
+      "total quantity of material is more than quantity of received Material"
+    );
+  } else if (
+    receivedmaterial.receivedQuantity >
+    rejectedQuantity + acceptedQuantity
+  ) {
+    throw new ApiError(
+      500,
+      "total quantity of material is less than quantity of received Material"
+    );
+  }
+
+  if (!receivedmaterial) {
+    throw new ApiError(500, "Not found material in receivedMaterials grn");
+  }
+
+  const isMaterialPresentinQC = grn.QC.find(
+    (material) => material.materialId.toString() === materialId
+  );
+  if (!isMaterialPresentinQC) {
+    grn.QC.push({
+      done_by,
+      rejectedQuantity,
+      acceptedQuantity,
+      materialId,
+      date,
+    });
+  } else {
+    const index = grn.QC.findIndex(
+      (material) => material.materialId.toString() === materialId
+    );
+
+    grn.QC[index] = {
+      done_by,
+      rejectedQuantity,
+      acceptedQuantity,
+      materialId,
+      date,
+    };
+  }
+
+  const updatedgrn = await grn.save();
+
+  if (!updatedgrn) {
+    throw new ApiError(500, "Something went wrong in updation of GRN");
+  }
+
+  return res
+    .status(201)
+    .json(new ApiResponse(200, updatedgrn, "GRN updated successfully"));
+});
+
+export { CreateGRN, UpdateReceivedData, UpdateQCData };

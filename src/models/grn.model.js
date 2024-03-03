@@ -1,5 +1,31 @@
 import mongoose, { Schema } from "mongoose";
 
+const qcSchema = new Schema({
+  done_by: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  materialId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Material",
+    required: true,
+  },
+  rejectedQuantity: {
+    type: Number,
+    required: true,
+  },
+  acceptedQuantity: {
+    type: Number,
+    required: true,
+  },
+  date: {
+    type: Date,
+    required: true,
+    default: Date.now(),
+  },
+});
+
 const receivedMaterialSchema = new Schema({
   materialId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -9,34 +35,27 @@ const receivedMaterialSchema = new Schema({
   receivedQuantity: {
     type: Number,
     required: true,
-    defaulte: 1,
   },
   cost_of_material: {
     type: Number,
     required: true,
-    defaulte: 1,
   },
   unit_of_material: {
     type: String,
     required: true,
-    defaulte: "units",
+  },
+  date: {
+    type: Date,
+    required: true,
+    default: Date.now(),
   },
 });
-// {
-//   "material_id": "65e0d6464c34defc27988221",
-//   "quantity": 30,
-//   "_id": "65e205161a51c43276b97bb7"
-// },
-// {
-//   "material_id": "65e0d6f6309e712eb5639e87",
-//   "quantity": 66,
-//   "_id": "65e205161a51c43276b97bb8"
-// }
+
 const grnSchema = new Schema(
   {
     userid: {
-      type: mongoose.Schema.Types.ObjectId, // GRN created by
-      ref: "User", // Reference to User model/schema
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     purchaseOrderId: {
@@ -44,7 +63,12 @@ const grnSchema = new Schema(
       ref: "PurchaseOrder",
       required: true,
     },
-    receivedMaterials: [receivedMaterialSchema], // Array of received materials
+    receivedMaterials: {
+      type: [receivedMaterialSchema],
+    },
+    QC: {
+      type: [qcSchema],
+    },
     date: {
       type: Date,
       required: true,
