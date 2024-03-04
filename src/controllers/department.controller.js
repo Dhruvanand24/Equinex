@@ -1,15 +1,15 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import {Department} from "../models/department.model.js";
-import {User} from "../models/user.model.js";
+import { Department } from "../models/department.model.js";
+import { User } from "../models/user.model.js";
 const CreateDepartment = asyncHandler(async (req, res) => {
   const { name, description, departmentHead } = req.body;
 
   if ([name, description, departmentHead].some((item) => item?.trim() === "")) {
     throw new ApiError(500, "All fields are required");
   }
-  const isnameexists=await Department.findOne({name});
+  const isnameexists = await Department.findOne({ name });
 
   if (!isnameexists) {
     throw new ApiError(500, "Department of same name found!");

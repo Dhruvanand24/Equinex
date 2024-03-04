@@ -5,7 +5,7 @@ const departmentSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    unique:true,
+    unique: true,
     index: true,
   },
   description: {
@@ -20,5 +20,3 @@ const departmentSchema = new Schema({
 });
 
 export const Department = mongoose.model("Department", departmentSchema);
-
-
