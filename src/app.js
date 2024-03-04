@@ -9,7 +9,7 @@ import purchaseRouter from "./routes/purchase.routes.js";
 import inventoryRouter from "./routes/inventory.routes.js";
 import sellerRoutes from "./routes/seller.routes.js";
 import grnRoutes from "./routes/grn.routes.js";
-
+import departmentRouter from "./routes/department.routes.js";
 const app = express();
 
 app.use(
@@ -38,5 +38,6 @@ app.use("/api/v1/seller", sellerRoutes);
 app.use("/api/v1/grn", grnRoutes);
 
 app.use("/api/v1/inventory", inventoryRouter);
+app.use("/api/v1/department", departmentRouter);
 
 export { app };
