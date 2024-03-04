@@ -5,6 +5,7 @@ const departmentSchema = new Schema({
     type: String,
     required: true,
     trim: true,
+    unique:true,
     index: true,
   },
   description: {

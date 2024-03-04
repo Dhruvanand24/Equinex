@@ -9,6 +9,11 @@ const CreateDepartment = asyncHandler(async (req, res) => {
   if ([name, description, departmentHead].some((item) => item?.trim() === "")) {
     throw new ApiError(500, "All fields are required");
   }
+  const isnameexists=await Department.findOne({name});
+
+  if (!isnameexists) {
+    throw new ApiError(500, "Department of same name found!");
+  }
 
   const isuserexists = await User.findOne({ _id: departmentHead });
   if (!isuserexists) {
