@@ -28,7 +28,8 @@ const mr_request_schema = new Schema({
     required: true,
   },
   Department_request_raise: {
-    type: Object, // request by, request department
+    type: Schema.Types.ObjectId,
+    ref:"Department",
     required: true,
   },
   Store: {
@@ -36,7 +37,8 @@ const mr_request_schema = new Schema({
     required: true,
   },
   Receive_in_Department: {
-    type: Object, // received by, receiveing date
+    type: Schema.Types.ObjectId,
+    ref:"Department",
   },
   Receipt: {
     content: {
