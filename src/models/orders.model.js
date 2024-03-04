@@ -4,6 +4,7 @@ const orderschema = new Schema({
   Order_By: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref: "Buyers"
   },
   Date_of_Order: {
     type: Date,

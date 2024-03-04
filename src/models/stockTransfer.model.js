@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const stockTrasnferSchema = new Schema(
+const stockTransferSchema = new Schema(
   {
     material_request_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -20,7 +20,7 @@ const stockTrasnferSchema = new Schema(
       {
         material_id: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Material",
+          ref: "Materials",
           required: true,
         },
         quantity: {
@@ -29,12 +29,18 @@ const stockTrasnferSchema = new Schema(
         },
       },
     ],
-    Seller: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "Seller",
+    issuedby: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
     },
+    createdby: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users"
+    }
   },
+
+ 
+
   {
     timestamps: true,
   }
@@ -42,5 +48,5 @@ const stockTrasnferSchema = new Schema(
 
 export const StockTransferRequest = mongoose.model(
   "StockTransferRequest",
-  stockTrasnferSchema
+  stockTransferSchema
 );
