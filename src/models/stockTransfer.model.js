@@ -3,19 +3,19 @@ import mongoose, { Schema } from "mongoose";
 const stockTransferSchema = new Schema(
   {
     material_request_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "MaterialRequests",
-        required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "MaterialRequests",
+      required: true,
     },
 
     Approved_by_warehouse: {
-        type: Boolean,
+      type: Boolean,
     },
 
     Intransit: {
-        type: Boolean,
+      type: Boolean,
     },
-    
+
     List_of_materials: [
       {
         material_id: {
@@ -30,16 +30,14 @@ const stockTransferSchema = new Schema(
       },
     ],
     issuedby: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Users",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
     },
     createdby: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Users"
-    }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
   },
-
- 
 
   {
     timestamps: true,
