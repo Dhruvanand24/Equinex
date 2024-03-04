@@ -33,7 +33,7 @@ const userSchema = new Schema({
   },
   post: {
     type: String,
-    required: [true, "Post is Required"]
+    
   },
   AccessPermission: {
     type: Object,
