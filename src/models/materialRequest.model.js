@@ -27,7 +27,7 @@ const mr_request_schema = new Schema({
     type: Object, // approved by, isapproved, approval data
     required: true,
   },
-  Department_requrest_raise: {
+  Department_request_raise: {
     type: Object, // request by, request department
     required: true,
   },
