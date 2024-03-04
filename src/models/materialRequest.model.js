@@ -14,7 +14,7 @@ const mr_request_schema = new Schema({
     {
       material_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Material",
+        ref: "Materials",
         required: true,
       },
       quantity: {

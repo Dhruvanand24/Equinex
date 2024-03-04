@@ -40,7 +40,7 @@ const userSchema = new Schema({
   },
   warehouseId:{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Warehouse"
+    ref: "Warehouses"
   }
 
 });

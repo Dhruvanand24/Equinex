@@ -5,7 +5,7 @@ const purchase_order_schema = new Schema(
     Requester: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "User", // currecnt login user
+      ref: "Users", // currecnt login user
     },
     Date_of_request: {
       type: Date,
@@ -15,7 +15,7 @@ const purchase_order_schema = new Schema(
       {
         material_id: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Material",
+          ref: "Materials",
           required: true,
         },
         quantity: {
@@ -27,7 +27,7 @@ const purchase_order_schema = new Schema(
     Seller: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "Seller",
+      ref: "Sellers",
     },
   },
   {
