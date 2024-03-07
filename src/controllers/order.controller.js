@@ -2,11 +2,9 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Order } from "../models/orders.model.js";
-
 const CreateOrder = asyncHandler(async (req, res) => {
     const {
         Order_By,
-        Order_By_id,
         Date_of_Order,
         Paid_amount,
         Deal_amount,
@@ -16,10 +14,9 @@ const CreateOrder = asyncHandler(async (req, res) => {
     } = req.body;
 
    
-
+    // console.log(req.body)
     const order = await Order.create({
         Order_By,
-        Order_By_id,
         Date_of_Order,
         Paid_amount,
         Deal_amount,
