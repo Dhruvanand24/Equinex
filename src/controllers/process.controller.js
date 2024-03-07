@@ -4,31 +4,35 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { Process } from "../models/process.model.js";
 
 const CreateProcess = asyncHandler(async (req, res) => {
-    const {
-        name
-    } = req.body;
+  const { name } = req.body;
 
-    if (
-        [
-            name
-        ].some((field) => field?.trim() === "")
-    ) {
-        throw new ApiError(400, "All fields are required");
-    }
+  if ([name].some((field) => field?.trim() === "")) {
+    throw new ApiError(400, "All fields are required");
+  }
 
-    const process = await Process.create({
-       name
-    });
+  const process = await Process.create({
+    name,
+  });
 
-    if (!process) {
-        throw new ApiError(500, "Something went wrong while creating the order");
-    }
+  if (!process) {
+    throw new ApiError(500, "Something went wrong while creating the order");
+  }
 
-    return res
-        .status(201)
-        .json(new ApiResponse(200, process, "Process created successfully"));
-
-
+  return res
+    .status(201)
+    .json(new ApiResponse(200, process, "Process created successfully"));
 });
 
-export { CreateProcess };
+const GetAllProcesses = asyncHandler(async (req, res) => {
+  const allprocess = await Process.find();
+
+  if (!allprocess) {
+    throw new ApiError(500, "Not getting all process");
+  }
+
+  return res
+    .status(201)
+    .json(new ApiResponse(200, allprocess, "Got all process Successfully"));
+});
+
+export { CreateProcess, GetAllProcesses };
