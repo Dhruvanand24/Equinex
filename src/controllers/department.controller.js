@@ -37,4 +37,14 @@ const CreateDepartment = asyncHandler(async (req, res) => {
       new ApiResponse(200, newdepartment, "Department created Successfully")
     );
 });
-export { CreateDepartment };
+
+const GetAllDepartment = asyncHandler(async (req,res)=>{
+  const alldepartments= await Department.find();
+
+  if(!alldepartments){
+    throw new ApiError(500, "Departments not found")
+  }
+
+  return res.status(201).json(new ApiResponse(200, alldepartments, "Got all departments successfully"))
+})
+export { CreateDepartment, GetAllDepartment};
