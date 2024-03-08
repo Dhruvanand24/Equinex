@@ -35,22 +35,15 @@ const createMaterial = asyncHandler(async (req, res) => {
 const createMaterialRequest = asyncHandler(async (req, res) => {
   const {
     Order_Id,
-    Date_of_request,
     List_of_materials,
-    Status_approval,
-    Department_requrest_raise,
-    Store,
-    Receive_in_Department,
+    Department_request_raise,
   } = req.body;
 
   const newrequest = await MaterialRequest.create({
     Order_Id,
-    Date_of_request,
+    Date_of_request: Date.now(),
     List_of_materials,
-    Status_approval,
-    Department_requrest_raise,
-    Store,
-    Receive_in_Department,
+    Department_request_raise,
   });
 
   if (!newrequest) {

@@ -26,6 +26,7 @@ const mr_request_schema = new Schema({
   Status_approval: {
     type: Object, // approved by, isapproved, approval data
     required: true,
+    default:{isapproved:false}
   },
   Department_request_raise: {
     type: Schema.Types.ObjectId,
@@ -34,7 +35,7 @@ const mr_request_schema = new Schema({
   },
   Store: {
     type: Object, // isissue, issu by, issue date
-    required: true,
+    // required: true,
   },
   Receive_in_Department: {
     type: Schema.Types.ObjectId,
