@@ -7,20 +7,12 @@ import { PurchaseOrder } from "../models/purchaseOrder.model.js";
 const CreatePurchaseRequest = asyncHandler(async (req, res) => {
   const {
     Requester,
-    Date_of_request,
     List_of_materials,
-    isApproved,
-    Approved_by,
-    Closed_by,
   } = req.body;
 
   const purchaserequest = await PurchaseRequest.create({
     Requester,
-    Date_of_request,
     List_of_materials,
-    isApproved,
-    Approved_by,
-    Closed_by,
   });
   if (!purchaserequest) {
     throw new ApiError(
