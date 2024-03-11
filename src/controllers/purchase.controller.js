@@ -3,15 +3,15 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { PurchaseRequest } from "../models/purchaseRequest.model.js";
 import { PurchaseOrder } from "../models/purchaseOrder.model.js";
-
+import mongoose from "mongoose";
 const CreatePurchaseRequest = asyncHandler(async (req, res) => {
-  const {
-    Requester,
-    List_of_materials,
-  } = req.body;
+  const {List_of_materials } = req.body;
+  if (List_of_materials.length === 0) {
+    throw new ApiError(500, "Couldn't find the materials!!");
+  }
 
   const purchaserequest = await PurchaseRequest.create({
-    Requester,
+    Requester:req.user._id.toString(),
     List_of_materials,
   });
   if (!purchaserequest) {
@@ -33,7 +33,12 @@ const CreatePurchaseRequest = asyncHandler(async (req, res) => {
 
 const CreatePurchaseOrder = asyncHandler(async (req, res) => {
   const { Requester, Date_of_request, List_of_materials, Seller } = req.body;
-
+  if (List_of_materials.length === 0) {
+    throw new ApiError(500, "Couldn't find the materials!!");
+  }
+  if(Seller===''){
+    throw new ApiError(500, "Couldn't find the seller!!");
+  }
   const createdpurchaseorder = await PurchaseOrder.create({
     Requester,
     Date_of_request,
