@@ -13,6 +13,7 @@ import departmentRouter from "./routes/department.routes.js";
 import buyerRouter from "./routes/buyer.routes.js";
 import processRouter from "./routes/process.routes.js";
 import orderRouter from "./routes/order.routes.js";
+import warehouseRouter from "./routes/warehouse.routes.js";
 const app = express();
 
 app.use(
@@ -40,5 +41,6 @@ app.use("/api/v1/inventory", inventoryRouter);
 app.use("/api/v1/department", departmentRouter);
 app.use("/api/v1/process", processRouter);
 app.use("/api/v1/orders", orderRouter);
+app.use("/api/v1/warehouse", warehouseRouter);
 
 export { app };
