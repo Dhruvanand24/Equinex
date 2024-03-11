@@ -39,6 +39,10 @@ const createMaterialRequest = asyncHandler(async (req, res) => {
     Department_request_raise,
   } = req.body;
 
+  if(List_of_materials.length===0){
+    throw new ApiError(500, "Couldn't get the materials")
+  }
+
   const newrequest = await MaterialRequest.create({
     Order_Id,
     Date_of_request: Date.now(),

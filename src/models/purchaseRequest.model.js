@@ -20,11 +20,13 @@ const purchase_request_schema = new Schema(
     Date_of_request: {
       type: Date,
       required: true,
+      default:Date.now()
     },
     List_of_materials: [materials],
     isApproved: {
       type: Boolean,
       required: true,
+      default:false,
     },
     Approved_by: {
       type: mongoose.Schema.Types.ObjectId,
