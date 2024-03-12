@@ -36,5 +36,17 @@ const CreateSeller = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(200, createdseller, "Seller created successfully"));
 });
+const GetAllSellers = asyncHandler(async (req, res) => {
+  const allSellers = await Seller.find();
 
-export { CreateSeller };
+  if (!allSellers) {
+    throw ApiError(500, "Could'nt get the Sellers");
+  }
+
+  return res
+    .status(201)
+    .json(new ApiResponse(200, allSellers, "Got all Sellers successfully"));
+});
+
+
+export { CreateSeller,GetAllSellers };

@@ -21,7 +21,7 @@ const sellerschema = new Schema({
     trim: true,
   },
   gst: {
-    type: Number,
+    type: String,
     required: true,
     trim: true,
   },
