@@ -51,6 +51,9 @@ const mr_request_schema = new Schema({
       required: false, // Change to true if a receipt is always required
     },
   },
+},
+{
+  timestamps:true,
 });
 
 export const MaterialRequest = mongoose.model(

@@ -33,14 +33,10 @@ const createMaterial = asyncHandler(async (req, res) => {
 });
 
 const createMaterialRequest = asyncHandler(async (req, res) => {
-  const {
-    Order_Id,
-    List_of_materials,
-    Department_request_raise,
-  } = req.body;
+  const { Order_Id, List_of_materials, Department_request_raise } = req.body;
 
-  if(List_of_materials.length===0){
-    throw new ApiError(500, "Couldn't get the materials")
+  if (List_of_materials.length === 0) {
+    throw new ApiError(500, "Couldn't get the materials");
   }
 
   const newrequest = await MaterialRequest.create({
@@ -92,8 +88,8 @@ const getAllMaterialRequest = asyncHandler(async (req, res) => {
     );
 });
 
-const updateMaterialRequest = asyncHandler(async(req,res)=>{
-  const {_id,data}=req.body;
+const updateMaterialRequest = asyncHandler(async (req, res) => {
+  const { _id, Status } = req.body;
   //example of req.body
   // {
   //   "_id":"65e0dc098dd0e98626e5959a",
@@ -104,19 +100,31 @@ const updateMaterialRequest = asyncHandler(async(req,res)=>{
   //       "issue_date": "ajj ka din"
   //     }
   //   }
-    
+
   // }
-  const materialrequest=await MaterialRequest.findOne({_id});
+
+  console.log(req.user._id.toString(), _id,Status);
+
+  const data = {
+    Status_approval: {
+      isapproved: Status,
+      approved_by: req.user._id.toString(),
+    },
+  };
+  const materialrequest = await MaterialRequest.findOne({ _id:_id.trim() });
   if (!materialrequest) {
     throw new ApiError(
       500,
       "Something Went wrong while getting material request for updation"
     );
   }
+  const updatedMaterialRequest = await MaterialRequest.findByIdAndUpdate(
+    _id,
+    data,
+    { new: true }
+  );
 
-  const updatedMaterialRequest = await MaterialRequest.findByIdAndUpdate(_id, data, { new: true });
-
-  if(!updatedMaterialRequest){
+  if (!updatedMaterialRequest) {
     throw new ApiError(
       500,
       "Something Went wrong while updating material request"
@@ -131,12 +139,11 @@ const updateMaterialRequest = asyncHandler(async(req,res)=>{
         "material request updated successfully"
       )
     );
-
-})
+});
 export {
   createMaterial,
   createMaterialRequest,
   getAllMaterial,
   getAllMaterialRequest,
-  updateMaterialRequest
+  updateMaterialRequest,
 };
