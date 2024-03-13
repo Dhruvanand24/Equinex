@@ -39,8 +39,8 @@ const createMaterialRequest = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Couldn't get the materials");
   }
 
-  if(List_of_materials.length===0){
-    throw new ApiError(500, "Couldn't get the materials")
+  if (List_of_materials.length === 0) {
+    throw new ApiError(500, "Couldn't get the materials");
   }
 
   const newrequest = await MaterialRequest.create({
@@ -107,7 +107,7 @@ const updateMaterialRequest = asyncHandler(async (req, res) => {
 
   // }
 
-  console.log(req.user._id.toString(), _id,Status);
+  console.log(req.user._id.toString(), _id, Status);
 
   const data = {
     Status_approval: {
@@ -115,7 +115,7 @@ const updateMaterialRequest = asyncHandler(async (req, res) => {
       approved_by: req.user._id.toString(),
     },
   };
-  const materialrequest = await MaterialRequest.findOne({ _id:_id.trim() });
+  const materialrequest = await MaterialRequest.findOne({ _id: _id.trim() });
   if (!materialrequest) {
     throw new ApiError(
       500,
@@ -145,26 +145,28 @@ const updateMaterialRequest = asyncHandler(async (req, res) => {
     );
 });
 
-const getMaterialById = asyncHandler(async(req, res)=>{
-  const {material_id} = req.body;
-  
-  if([material_id].some(field=> field.trim()==='')){
+const getMaterialById = asyncHandler(async (req, res) => {
+  const { material_id } = req.body;
+
+  if ([material_id].some((field) => field.trim() === "")) {
     throw new ApiError(500, "Provided id is not in proper format!");
   }
 
-  const material=await Material.findOne({_id:material_id});
+  const material = await Material.findOne({ _id: material_id });
 
-  if(!material){
+  if (!material) {
     throw new ApiError(500, "Enter a valid Material ID");
   }
 
-  return res.status(201).json(new ApiResponse(200, material, "Got the material Successfully"));
-})
+  return res
+    .status(201)
+    .json(new ApiResponse(200, material, "Got the material Successfully"));
+});
 export {
   createMaterial,
   createMaterialRequest,
   getAllMaterial,
   getAllMaterialRequest,
   updateMaterialRequest,
-  getMaterialById
+  getMaterialById,
 };
