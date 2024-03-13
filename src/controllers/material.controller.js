@@ -74,7 +74,7 @@ const getAllMaterial = asyncHandler(async (req, res) => {
 });
 
 const getAllMaterialRequest = asyncHandler(async (req, res) => {
-  const allMaterialRequest = await MaterialRequest.find();
+  const allMaterialRequest = await MaterialRequest.find().sort({ Date_of_request: -1 });;
   if (!allMaterialRequest) {
     throw new ApiError(
       500,
