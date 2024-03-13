@@ -212,6 +212,27 @@ const getAllUsers = asyncHandler(async(req, res) => {
         "User request get successfully"
       )
     );
-})
+});
+const getUserById = asyncHandler(async (req, res) => {
+  console.log("func arrive")
+  const { user_id } = req.body;
+  console.log(user_id)
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken, changeCurrentPassword, getCurrentUser, getAllUsers };
+  if ([user_id].some((field) => field.trim() === "")) {
+    throw new ApiError(500, "Provided id is not in proper format!");
+  }
+  console.log("reached here");
+
+  const user = await User.findOne({ _id: user_id }).select("-password -refreshToken");
+
+  if (!user) {
+    throw new ApiError(500, "Enter a valid User ID");
+  }
+
+  return res
+    .status(201)
+    .json(new ApiResponse(200, user, "Got the user Successfully"));
+});
+
+
+export { registerUser, loginUser, logoutUser, refreshAccessToken, changeCurrentPassword, getCurrentUser, getAllUsers, getUserById };
