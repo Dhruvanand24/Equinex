@@ -144,10 +144,27 @@ const updateMaterialRequest = asyncHandler(async (req, res) => {
       )
     );
 });
+
+const getMaterialById = asyncHandler(async(req, res)=>{
+  const {material_id} = req.body;
+  
+  if([material_id].some(field=> field.trim()==='')){
+    throw new ApiError(500, "Provided id is not in proper format!");
+  }
+
+  const material=await Material.findOne({_id:material_id});
+
+  if(!material){
+    throw new ApiError(500, "Enter a valid Material ID");
+  }
+
+  return res.status(201).json(new ApiResponse(200, material, "Got the material Successfully"));
+})
 export {
   createMaterial,
   createMaterialRequest,
   getAllMaterial,
   getAllMaterialRequest,
   updateMaterialRequest,
+  getMaterialById
 };
