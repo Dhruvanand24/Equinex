@@ -24,7 +24,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { fullName, email, username, password } = req.body;
+  const { fullName, email, username, password, post, AccessPermission, warehouseId } = req.body;
   //console.log("email: ", email);
   if (
     [fullName, email, username, password].some((field) => field?.trim() === "")
@@ -44,6 +44,9 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     username: username.toLowerCase(),
+    post,
+    AccessPermission,
+    warehouseId
   });
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken"
@@ -192,5 +195,23 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 const getCurrentUser = asyncHandler(async(req, res) => {
   return res.status(200).json(new ApiResponse(200, req.user, "current user fetched successfully"))
 })
+const getAllUsers = asyncHandler(async(req, res) => {
+  const allUsers = await User.find();
+  if (!allUsers) {
+    throw new ApiError(
+      500,
+      "Something Went wrong while getting users"
+    );
+  }
+  return res
+    .status(201)
+    .json(
+      new ApiResponse(
+        200,
+        allUsers,
+        "User request get successfully"
+      )
+    );
+})
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken, changeCurrentPassword, getCurrentUser };
+export { registerUser, loginUser, logoutUser, refreshAccessToken, changeCurrentPassword, getCurrentUser, getAllUsers };
