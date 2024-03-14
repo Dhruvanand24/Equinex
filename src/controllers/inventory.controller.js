@@ -2,6 +2,69 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Inventory } from "../models/inventory.model.js";
+import { Material } from "../models/material.model.js";
+
+
+
+const updateInventory = async(req, res) => {
+  try {
+    const { material_id, warehouse_id, quantity } = req.body;
+
+    // Validate input parameters
+    if (!material_id || !warehouse_id || !quantity) {
+      throw new ApiError(400, "Material ID, warehouse ID, and quantity are required");
+    }
+
+    // Fetch material name using material ID
+    const material = await Material.findById(material_id);
+    if (!material) {
+      throw new ApiError(404, "Material not found");
+    }
+
+    // Check if material exists in inventory
+    let inventory = await Inventory.findOne({ materialID: material_id });
+
+    if (inventory) {
+      // If material exists, update quantity and warehouse details
+      const existingWarehouse = inventory.warehouse.find(
+        (wh) => String(wh.warehouseId) === String(warehouse_id)
+      );
+
+      if (existingWarehouse) {
+        // If warehouse exists, update quantity
+        existingWarehouse.quantity += quantity;
+      } else {
+        // If warehouse does not exist, add new entry
+        inventory.warehouse.push({ warehouseId: warehouse_id, quantity });
+      }
+
+      // Update total quantity
+      inventory.quantity += quantity;
+      await inventory.save();
+    } else {
+      // If material does not exist, create new entry in inventory
+      inventory = await Inventory.create({
+        materialID: material_id,
+        materialName: material.name,
+        quantity,
+        warehouse: [{ warehouseId: warehouse_id, quantity }],
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Inventory updated successfully",
+      data: inventory,
+    });
+  } catch (error) {
+    console.error("Error updating inventory:", error);
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+};
+
 
 const getFullIventory = asyncHandler(async (req, res) => {
   const fullInventory = await Inventory.find();

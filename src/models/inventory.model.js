@@ -20,6 +20,9 @@ const inventoryschema = new Schema({
     index: true, // Add an index to improve query performance
     unique: true, // Ensure uniqueness for materialID
   },
+  materialName: {
+    type: String,
+  },
   quantity: {
     type: Number,
     required: true,
@@ -31,6 +34,9 @@ const inventoryschema = new Schema({
   price: {
     type: Number,
   }
+},
+{
+  timestamps:true,
 });
 
 export const Inventory = mongoose.model("inventory", inventoryschema);
