@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Order } from "../models/orders.model.js";
+import {Buyer} from "../models/buyer.model.js";
 const CreateOrder = asyncHandler(async (req, res) => {
     const {
         Order_By,
@@ -13,8 +14,17 @@ const CreateOrder = asyncHandler(async (req, res) => {
         Date_of_Delivery,
     } = req.body;
 
+    // Find the buyer using Order_By
+    const buyer = await Buyer.findById(Order_By);
+
+    if (!buyer) {
+        throw new ApiError(404, "Buyer not found");
+    }
+
+    // Extract the name from the buyer
+    const Order_By_Name = buyer.name;
    
-    // console.log(req.body)
+    // Create the order
     const order = await Order.create({
         Order_By,
         Date_of_Order,
@@ -22,7 +32,8 @@ const CreateOrder = asyncHandler(async (req, res) => {
         Deal_amount,
         Deadline,
         production_process,
-        Date_of_Delivery
+        Date_of_Delivery,
+        Order_By_Name,
     });
 
     if (!order) {
@@ -32,9 +43,8 @@ const CreateOrder = asyncHandler(async (req, res) => {
     return res
         .status(201)
         .json(new ApiResponse(200, order, "Order created successfully"));
-
-
 });
+
 const GetAllOrder=asyncHandler(async(req,res)=>{
     const AllOrders=await Order.find();
     return res

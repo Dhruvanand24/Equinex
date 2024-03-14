@@ -6,6 +6,9 @@ const orderschema = new Schema({
     required: true,
     ref: "Buyers"
   },
+  Order_By_Name: {
+    type: String,
+  },
   Date_of_Order: {
     type: Date,
     required: true,
