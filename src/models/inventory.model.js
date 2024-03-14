@@ -26,8 +26,11 @@ const inventoryschema = new Schema({
   },
   warehouse: {
     type: [warehouseQuantitySchema], // Array of objects with warehouseId and quantity
-    required: true,
+    
   },
+  price: {
+    type: Number,
+  }
 });
 
 export const Inventory = mongoose.model("inventory", inventoryschema);
