@@ -5,13 +5,13 @@ import { Warehouse } from "../models/warehouse.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 const CreateWarehouse = asyncHandler(async (req, res) => {
-  const { name, manager_id} = req.body;
+  const { name, manager} = req.body;
   //console.log("email: ", email);
  
  
   const warehouse = await Warehouse.create({
     name,
-    manager_id
+    manager
   });
   const createdWarehouse = await Warehouse.findById(warehouse._id);
   if (!createdWarehouse) {

@@ -6,7 +6,7 @@ const warehouseSchema = new Schema({
     required: true,
   },
   manager: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: "Users"
   }
 });
