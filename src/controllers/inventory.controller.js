@@ -45,7 +45,7 @@ const updateInventory = async(req, res) => {
       // If material does not exist, create new entry in inventory
       inventory = await Inventory.create({
         materialID: material_id,
-        materialName: material.name,
+        materialName: material.Name,
         quantity,
         warehouse: [{ warehouseId: warehouse_id, quantity }],
       });
@@ -98,4 +98,4 @@ const getMaterialStatus = asyncHandler(async (req, res) => {
     );
 });
 
-export { getFullIventory, getMaterialStatus };
+export { getFullIventory, getMaterialStatus, updateInventory };
