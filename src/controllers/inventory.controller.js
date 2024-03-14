@@ -6,7 +6,7 @@ import { Material } from "../models/material.model.js";
 
 
 
-const updateInventory = async(req, res) => {
+const updateInventory = async (req, res) => {
   try {
     const { material_id, warehouse_id, quantity } = req.body;
 
@@ -26,28 +26,28 @@ const updateInventory = async(req, res) => {
 
     if (inventory) {
       // If material exists, update quantity and warehouse details
-      const existingWarehouse = inventory.warehouse.find(
+      const existingWarehouseIndex = inventory.warehouse.findIndex(
         (wh) => String(wh.warehouseId) === String(warehouse_id)
       );
 
-      if (existingWarehouse) {
+      if (existingWarehouseIndex !== -1) {
         // If warehouse exists, update quantity
-        Number(existingWarehouse.quantity) += Number(quantity);
+        inventory.warehouse[existingWarehouseIndex].quantity += Number(quantity);
       } else {
         // If warehouse does not exist, add new entry
-        inventory.warehouse.push({ warehouseId: warehouse_id, quantity });
+        inventory.warehouse.push({ warehouseId: warehouse_id, quantity: Number(quantity) });
       }
 
       // Update total quantity
-      Number(inventory.quantity) += Number(quantity);
+      inventory.quantity += Number(quantity);
       await inventory.save();
     } else {
       // If material does not exist, create new entry in inventory
       inventory = await Inventory.create({
         materialID: material_id,
         materialName: material.Name,
-        quantity,
-        warehouse: [{ warehouseId: warehouse_id, quantity }],
+        quantity: Number(quantity),
+        warehouse: [{ warehouseId: warehouse_id, quantity: Number(quantity) }],
       });
     }
 
@@ -64,6 +64,7 @@ const updateInventory = async(req, res) => {
     });
   }
 };
+
 
 
 const getFullIventory = asyncHandler(async (req, res) => {
