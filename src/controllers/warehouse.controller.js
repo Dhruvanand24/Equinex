@@ -32,7 +32,7 @@ const GetAllWarehouse = asyncHandler(async (req, res) => {
 
   return res
     .status(201)
-    .json(new ApiResponse(200, allBuyers, "Got all Warehouses successfully"));
+    .json(new ApiResponse(200, allWarehouse, "Got all Warehouses successfully"));
 });
 
 export { CreateWarehouse, GetAllWarehouse };
