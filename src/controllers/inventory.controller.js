@@ -32,14 +32,14 @@ const updateInventory = async(req, res) => {
 
       if (existingWarehouse) {
         // If warehouse exists, update quantity
-        existingWarehouse.quantity += quantity;
+        Number(existingWarehouse.quantity) += Number(quantity);
       } else {
         // If warehouse does not exist, add new entry
         inventory.warehouse.push({ warehouseId: warehouse_id, quantity });
       }
 
       // Update total quantity
-      inventory.quantity += quantity;
+      Number(inventory.quantity) += Number(quantity);
       await inventory.save();
     } else {
       // If material does not exist, create new entry in inventory
