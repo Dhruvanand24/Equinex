@@ -65,8 +65,6 @@ const updateInventory = async (req, res) => {
   }
 };
 
-
-
 const getFullIventory = asyncHandler(async (req, res) => {
   const fullInventory = await Inventory.find();
   if (!fullInventory) {
@@ -99,4 +97,14 @@ const getMaterialStatus = asyncHandler(async (req, res) => {
     );
 });
 
-export { getFullIventory, getMaterialStatus, updateInventory };
+const getMaterialInventoryById = asyncHandler(async(req,res)=>{
+  const {id}=req.body;
+  const inventoryMaterial= await Inventory.findOne({materialID:id});
+  if(!inventoryMaterial){
+    throw new ApiError(500, "Not found Inventory");
+  }
+
+  return res.status(201).json(new ApiResponse(200, inventoryMaterial,"Got inventory details Successfully!"))
+})
+
+export { getFullIventory, getMaterialStatus, updateInventory, getMaterialInventoryById };
