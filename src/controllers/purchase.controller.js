@@ -62,6 +62,28 @@ const CreatePurchaseOrder = asyncHandler(async (req, res) => {
       )
     );
 });
+const GetAllPurchaseRequest = asyncHandler(async (req, res) => {
+  try {
+    // Fetch all purchase orders sorted by creation date in descending order
+    const allPurchaseOrders = await PurchaseRequest.find().sort({ createdAt: -1 });
+
+    // Check if there are any purchase orders
+    if (!allPurchaseOrders || allPurchaseOrders.length === 0) {
+      throw new ApiError(404, "No purchase orders found");
+    }
+
+    // Respond with the array of purchase orders
+    return res.status(200).json(new ApiResponse(200,allPurchaseOrders, "Successfull"));
+  } catch (error) {
+    // Handle errors
+    console.error("Error fetching purchase orders:", error);
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+});
+
 
 const GetAllMaterialListOfPurchaseOrder = asyncHandler(async (req, res) => {
   const { _id } = req.body;
@@ -87,4 +109,5 @@ export {
   CreatePurchaseRequest,
   CreatePurchaseOrder,
   GetAllMaterialListOfPurchaseOrder,
+  GetAllPurchaseRequest
 };
