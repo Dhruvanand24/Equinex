@@ -3,6 +3,8 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Material } from "../models/material.model.js";
 import { MaterialRequest } from "../models/materialRequest.model.js";
+import { MaterialIssue } from "../models/materialIssue.model.js";
+
 const createMaterial = asyncHandler(async (req, res) => {
   const { Name, description } = req.body;
 
@@ -30,6 +32,80 @@ const createMaterial = asyncHandler(async (req, res) => {
   }
 
   throw new ApiError(500, "Something went wrong while creating material");
+});
+
+const createMaterialIssue = asyncHandler(async (req, res) => {
+  const { warehouseID, DepartmentId, MaterialID, Quantity, materialRequestID } =
+    req.body;
+
+  const IssuedByID = req.user._id;
+
+  const data = {
+    warehouseID,
+    DepartmentId,
+    MaterialID,
+    Quantity,
+    materialRequestID,
+    IssuedByID,
+  };
+
+  // Create the material issue
+  const materialIssue = await MaterialIssue.create(data);
+
+  if (!materialIssue) {
+    throw new ApiError(500, "Failed to create material issue");
+  }
+
+  // Update inventory
+  await updateInventory(MaterialID, warehouseID, -Quantity);
+
+  return res
+    .status(201)
+    .json(
+      new ApiResponse(200, materialIssue, "Material issue created successfully")
+    );
+});
+const updateInventory = async (materialID, warehouseID, quantityChange) => {
+  // Fetch the inventory item corresponding to the material ID
+  let inventoryItem = await Inventory.findOne({ materialID });
+
+  if (!inventoryItem) {
+    throw new ApiError(404, "Inventory item not found");
+  }
+
+  // Update the quantity of the material in the inventory
+  inventoryItem.quantity -= quantityChange;
+
+  // Update the quantity of the material in the specific warehouse
+  const warehouseIndex = inventoryItem.warehouse.findIndex(
+    (wh) => String(wh.warehouseId) === String(warehouseID)
+  );
+
+  if (warehouseIndex !== -1) {
+    inventoryItem.warehouse[warehouseIndex].quantity -= quantityChange;
+  }
+
+  // Save the updated inventory item
+  await inventoryItem.save();
+};
+
+const getAllMaterialIssue = asyncHandler(async (req, res) => {
+  // Fetch all material issues
+  const allMaterialIssues = await MaterialIssue.find().sort({ created_at: -1 });
+
+  if (!allMaterialIssues || allMaterialIssues.length === 0) {
+    throw new ApiError(404, "No material issues found");
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        allMaterialIssues,
+        "Successfully fetched all material issues"
+      )
+    );
 });
 
 const createMaterialRequest = asyncHandler(async (req, res) => {
@@ -115,7 +191,7 @@ const updateMaterialRequest = asyncHandler(async (req, res) => {
     Status_approval: {
       isapproved: Status,
       approved_by: req.user._id.toString(),
-      approved_by_name: req.user.fullName
+      approved_by_name: req.user.fullName,
     },
   };
   const materialrequest = await MaterialRequest.findOne({ _id: _id.trim() });
@@ -173,7 +249,9 @@ const getMaterialRequestById = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Provided id is not in proper format!");
   }
 
-  const materialrequest = await MaterialRequest.findOne({ _id: materialRequest_id });
+  const materialrequest = await MaterialRequest.findOne({
+    _id: materialRequest_id,
+  });
 
   if (!materialrequest) {
     throw new ApiError(500, "Enter a valid Material Request ID");
@@ -181,7 +259,13 @@ const getMaterialRequestById = asyncHandler(async (req, res) => {
 
   return res
     .status(201)
-    .json(new ApiResponse(200, materialrequest, "Got the materialrequest Successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        materialrequest,
+        "Got the materialrequest Successfully"
+      )
+    );
 });
 export {
   createMaterial,
@@ -191,4 +275,6 @@ export {
   updateMaterialRequest,
   getMaterialById,
   getMaterialRequestById,
+  createMaterialIssue,
+  getAllMaterialIssue,
 };
