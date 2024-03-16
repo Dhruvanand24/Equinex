@@ -17,11 +17,6 @@ const purchase_request_schema = new Schema(
       required: true,
       ref: "Users", // currecnt login user
     },
-    Date_of_request: {
-      type: Date,
-      required: true,
-      default:Date.now()
-    },
     List_of_materials: [materials],
     isApproved: {
       type: Boolean,
