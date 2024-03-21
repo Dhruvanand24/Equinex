@@ -62,21 +62,45 @@ const CreatePurchaseOrder = asyncHandler(async (req, res) => {
       )
     );
 });
+
 const GetAllPurchaseRequest = asyncHandler(async (req, res) => {
   try {
     // Fetch all purchase orders sorted by creation date in descending order
-    const allPurchaseOrders = await PurchaseRequest.find().sort({ createdAt: -1 });
+    const allPurchaseRequests = await PurchaseRequest.find().sort({ createdAt: -1 });
 
     // Check if there are any purchase orders
-    if (!allPurchaseOrders || allPurchaseOrders.length === 0) {
+    if (!allPurchaseRequests || allPurchaseRequests.length === 0) {
       throw new ApiError(404, "No purchase orders found");
     }
-
+    // console.log(allPurchaseRequests)
     // Respond with the array of purchase orders
-    return res.status(200).json(new ApiResponse(200,allPurchaseOrders, "Successfull"));
+    return res.status(200).json(new ApiResponse(200,allPurchaseRequests, "Successfull"));
   } catch (error) {
     // Handle errors
     console.error("Error fetching purchase orders:", error);
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+});
+const GetAllApprovedPurchaseRequest = asyncHandler(async (req, res) => {
+  try {
+    // Fetch all purchase orders sorted by creation date in descending order
+    const allPurchaseRequests = await PurchaseRequest.find().sort({ createdAt: -1 });
+
+    // Check if there are any purchase orders
+    if (!allPurchaseRequests || allPurchaseRequests.length === 0) {
+      throw new ApiError(404, "No purchase requests found");
+    }
+
+    // Respond with the array of purchase orders
+    const allApprovedRequests= allPurchaseRequests.filter((request)=> request.isApproved===true)
+    console.log(allApprovedRequests);
+    return res.status(200).json(new ApiResponse(200,allApprovedRequests, "Successfull"));
+  } catch (error) {
+    // Handle errors
+    console.error("Error fetching approved purchase requests:", error);
     return res.status(error.statusCode || 500).json({
       success: false,
       message: error.message || "Internal Server Error",
@@ -109,5 +133,6 @@ export {
   CreatePurchaseRequest,
   CreatePurchaseOrder,
   GetAllMaterialListOfPurchaseOrder,
-  GetAllPurchaseRequest
+  GetAllPurchaseRequest,
+  GetAllApprovedPurchaseRequest
 };
