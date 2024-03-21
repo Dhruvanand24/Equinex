@@ -3,7 +3,8 @@ import {
   CreatePurchaseRequest,
   CreatePurchaseOrder,
   GetAllMaterialListOfPurchaseOrder,
-  GetAllPurchaseRequest
+  GetAllPurchaseRequest,
+  GetAllApprovedPurchaseRequest
 } from "../controllers/purchase.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 const router = Router();
@@ -12,6 +13,7 @@ router.route("/createpurchaseorder").post(CreatePurchaseOrder);
 router
   .route("/getallmateriallistofpurchaseorder")
   .post(GetAllMaterialListOfPurchaseOrder);
-router.route("/getallpurchaseorder").get(GetAllPurchaseRequest);
+router.route("/getallpurchaserequest").get(GetAllPurchaseRequest);
+router.route("/getallapprovedpurchaserequest").get(GetAllApprovedPurchaseRequest);
 
 export default router;
